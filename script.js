@@ -57,7 +57,7 @@ function convert(rgbArr){
 }
 
 //104, 112, 13
-x = convert({r: 92, g: 85, b: 74})
+x = convert([72,82,58])
 
 
 console.log(x)
