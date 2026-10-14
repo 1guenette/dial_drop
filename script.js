@@ -56,6 +56,57 @@ function convert(rgbArr){
 
 }
 
+
+function setSliders(){
+    let sliderList = document.getElementsByClassName('Input-module__pbIYDa__strip')
+    console.log(sliderList.length)
+
+    for(i=0; i<sliderList.length; i++){
+        console.log(sliderList[i].ariaLabel)
+    }
+
+    // sliderList.forEach((element) => {
+    //     console.log(element)
+    // });
+}
+setSliders()
+
+function toggleAndMoveHueDown(units = 1) {
+  document.getElementById('toggle')?.click();
+
+  const strip = document.querySelector('[role="slider"][aria-label="Hue"]'); //TODO: change for class Input-module__pbIYDa__strip change all toggles
+  if (!strip) return;
+
+  const min = Number(strip.getAttribute('aria-valuemin'));
+  const max = Number(strip.getAttribute('aria-valuemax'));
+  const current = Number(strip.getAttribute('aria-valuenow'));
+  
+  const target = Math.min(max, current + units); // down = higher hue
+
+  const rect = strip.getBoundingClientRect(); // {x,y,width,height,top,right,bottom,left}
+  const x = rect.left + rect.width / 2; //loc of button center
+  const y = rect.top + ((target - min) / (max - min)) * rect.height; //loc of button center y
+
+  const fire = (el, type, isPointer) => {
+    const opts = { bubbles: true, cancelable: true, clientX: x, clientY: y, button: 0, buttons: type.endsWith('up') ? 0 : 1 };
+    el.dispatchEvent(
+      isPointer
+        ? new PointerEvent(type, { ...opts, pointerId: 1, isPrimary: true, pointerType: 'mouse' })
+        : new MouseEvent(type, opts)
+    );
+  };
+
+  // Simulate pressing on the strip at the target position, then releasing
+  fire(strip, 'pointerdown', true);
+  fire(strip, 'mousedown', false);
+  fire(document, 'pointermove', true);
+  fire(document, 'mousemove', false);
+  fire(document, 'pointerup', true);
+  fire(document, 'mouseup', false);
+}
+
+toggleAndLowerSlider();
+
 //104, 112, 13
 x = convert([72,82,58])
 
