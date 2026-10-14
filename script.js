@@ -53,38 +53,47 @@ function convert(rgbArr){
 
     return [hue, sat, val]
 
+    //TODO: Add mutationObserver for when sliders appear
 
 }
 
 
-function setSliders(){
+function setSliders(dest=[360,100,100]){
     let sliderList = document.getElementsByClassName('Input-module__pbIYDa__strip')
     console.log(sliderList.length)
 
     for(i=0; i<sliderList.length; i++){
         console.log(sliderList[i].ariaLabel)
+        console.log(sliderList[i].getAttribute('aria-valuemin'))
+        console.log(sliderList[i].getAttribute('aria-valuemax'))
+        console.log(typeof(parseInt(sliderList[i].getAttribute('aria-valuenow'))))
+
+        let currLoc = parseInt(sliderList[i].getAttribute('aria-valuenow'))
+        let moveAmount = hse[i] - currLoc        
+
+        setSliders(moveAmount, sliderList[i])
+
     }
 
     // sliderList.forEach((element) => {
     //     console.log(element)
     // });
 }
-setSliders()
 
-function toggleAndMoveHueDown(units = 1) {
+function toggleAndMoveHueDown(units = 1, element) {
   document.getElementById('toggle')?.click();
 
-  const strip = document.querySelector('[role="slider"][aria-label="Hue"]'); //TODO: change for class Input-module__pbIYDa__strip change all toggles
+  const strip = element; //TODO: change for class Input-module__pbIYDa__strip change all toggles
   if (!strip) return;
 
-  const min = Number(strip.getAttribute('aria-valuemin'));
-  const max = Number(strip.getAttribute('aria-valuemax'));
-  const current = Number(strip.getAttribute('aria-valuenow'));
+  const min = Number(strip.getAttribute('aria-valuemin')); //Got max possible Slider value
+  const max = Number(strip.getAttribute('aria-valuemax'));//Get min possible Slider value
+  const current = Number(strip.getAttribute('aria-valuenow')); //Get current Slider value
   
-  const target = Math.min(max, current + units); // down = higher hue
+  const target = Math.min(max, current + units); // down = higher hue 
 
   const rect = strip.getBoundingClientRect(); // {x,y,width,height,top,right,bottom,left}
-  const x = rect.left + rect.width / 2; //loc of button center
+  const x = rect.left + rect.width / 2; //loc of button center x
   const y = rect.top + ((target - min) / (max - min)) * rect.height; //loc of button center y
 
   const fire = (el, type, isPointer) => {
