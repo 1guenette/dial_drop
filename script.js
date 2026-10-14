@@ -1,13 +1,8 @@
 //get target color
-function getColor(){
-    const element = document.getElementsByClassName('Stimulus-module__91Z0fa__swatch'); 
-    console.log(element[0]);
-    return element[0].style.cssText.match(/\d+(\.\d+)?/g).map(Number);
-}
 
 
-//get current color
-function getDial(){const element = document.getElementsByClassName('Input-module__pbIYDa__bg'); console.log(element[0]);}
+
+// function getDial(){const element = document.getElementsByClassName('Input-module__pbIYDa__bg'); console.log(element[0]);}
 
 
 //Hue-360 == Input-module__pbIYDa__strip
@@ -58,20 +53,26 @@ function convert(rgbArr){
 }
 
 
+function getColor(){
+    const element = document.getElementsByClassName('Stimulus-module__91Z0fa__swatch'); 
+    console.log(element[0]);
+    return convert(element[0].style.cssText.match(/\d+(\.\d+)?/g).map(Number));
+    
+}
+
 function setSliders(dest=[360,100,100]){
     let sliderList = document.getElementsByClassName('Input-module__pbIYDa__strip')
     console.log(sliderList.length)
 
-    for(i=0; i<sliderList.length; i++){
+
+    for(let i=0; i < sliderList.length; i++){
         console.log(sliderList[i].ariaLabel)
-        console.log(sliderList[i].getAttribute('aria-valuemin'))
-        console.log(sliderList[i].getAttribute('aria-valuemax'))
-        console.log(typeof(parseInt(sliderList[i].getAttribute('aria-valuenow'))))
 
         let currLoc = parseInt(sliderList[i].getAttribute('aria-valuenow'))
-        let moveAmount = hse[i] - currLoc        
+        let moveAmount = dest[i] - currLoc        
+        console.log(moveAmount)
 
-        setSliders(moveAmount, sliderList[i])
+        toggleSlide(moveAmount, sliderList[i])
 
     }
 
@@ -80,7 +81,7 @@ function setSliders(dest=[360,100,100]){
     // });
 }
 
-function toggleAndMoveHueDown(units = 1, element) {
+function toggleSlide(units = 1, element) {
   document.getElementById('toggle')?.click();
 
   const strip = element; //TODO: change for class Input-module__pbIYDa__strip change all toggles
