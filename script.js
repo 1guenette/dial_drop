@@ -16,10 +16,11 @@
 // Red % = (R / 255) × 100
 // Green % = (G / 255) × 100
 // Blue % = (B / 255) × 100
+
 function convert(rgbArr){
     let r_deriv = rgbArr[0]/255
     let g_deriv = rgbArr[1]/255
-    let b_deriv = rgbArr[0]/255
+    let b_deriv = rgbArr[2]/255
     let cMax = Math.max(...[r_deriv, g_deriv, b_deriv])
     let cMin = Math.min(...[r_deriv, g_deriv, b_deriv])
     let delta = cMax - cMin
@@ -46,9 +47,8 @@ function convert(rgbArr){
 
     val = cMax
 
-    return [hue, sat, val]
+    return [Math.round(hue), Math.round(sat*100), Math.round(val*100)]
 
-    //TODO: Add mutationObserver for when sliders appear
 
 }
 
@@ -60,16 +60,21 @@ function getColor(){
     
 }
 
+//TODO: fix sliders for each row
 function setSliders(dest=[360,100,100]){
     let sliderList = document.getElementsByClassName('Input-module__pbIYDa__strip')
     console.log(sliderList.length)
 
-
+    
+    
     for(let i=0; i < sliderList.length; i++){
         console.log(sliderList[i].ariaLabel)
+        toggleSlide(0, sliderList[i])
+
 
         let currLoc = parseInt(sliderList[i].getAttribute('aria-valuenow'))
-        let moveAmount = dest[i] - currLoc        
+        //let moveAmount = dest[i] - currLoc        
+        let moveAmount = dest[i]
         console.log(moveAmount)
 
         toggleSlide(moveAmount, sliderList[i])
@@ -115,16 +120,17 @@ function toggleSlide(units = 1, element) {
   fire(document, 'mouseup', false);
 }
 
-toggleAndLowerSlider();
+// toggleAndLowerSlider();
 
 //104, 112, 13
-x = convert([72,82,58])
+// x = convert([72,82,58])
 
 
-console.log(x)
+// console.log(x)
 
-//z = mx+ny+b
+// //z = mx+ny+b
 
 
-//Input-module__pbIYDa__stripHandleInstant //class [0]
-//Input-module__pbIYDa__stripHandleInstant // class [1]
+// //Input-module__pbIYDa__stripHandleInstant //class [0]
+// //Input-module__pbIYDa__stripHandleInstant // class [1]
+// setSliders(dest=[300,58,88])
