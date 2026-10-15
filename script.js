@@ -1,22 +1,3 @@
-//get target color
-
-
-
-// function getDial(){const element = document.getElementsByClassName('Input-module__pbIYDa__bg'); console.log(element[0]);}
-
-
-//Hue-360 == Input-module__pbIYDa__strip
-
-
-//hsv to rgb calulation = HACK
-
-//FORMULA
-// Value = round((value8bit/255)*100)
-
-// Red % = (R / 255) × 100
-// Green % = (G / 255) × 100
-// Blue % = (B / 255) × 100
-
 function convert(rgbArr){
     let r_deriv = rgbArr[0]/255
     let g_deriv = rgbArr[1]/255
@@ -29,10 +10,8 @@ function convert(rgbArr){
         gh: 60*(((b_deriv-r_deriv)/delta)+2),
         bh:  60*(((r_deriv-g_deriv)/delta)+4)
     }
-
     hue = null
     if ( cMax === r_deriv){
-
        hue = h.rh 
     }
     else if(cMax === g_deriv){
@@ -42,14 +21,9 @@ function convert(rgbArr){
     else if(cMax == b_deriv){
         hue = h.bh
     }
-
     sat = cMax == 0 ? 0 :delta/cMax
-
     val = cMax
-
     return [Math.round(hue), Math.round(sat*100), Math.round(val*100)]
-
-
 }
 
 
@@ -60,12 +34,8 @@ function getColor(){
     
 }
 
-//TODO: fix sliders for each row
 function setSliders(dest=[360,100,100]){
     let sliderList = document.getElementsByClassName('Input-module__pbIYDa__strip')
-    console.log(sliderList.length)
-
-    
     
     for(let i=0; i < sliderList.length; i++){
         console.log(sliderList[i].ariaLabel)
@@ -83,20 +53,20 @@ function setSliders(dest=[360,100,100]){
             toggleSlide(100-moveAmount, (sliderList[i]))
         }
         else{
-            toggleSlide(moveAmount, sliderList[i])
+            if(moveAmount < 0){
+                toggleSlide(360 + moveAmount, sliderList[i])
+            }
+            else{
+                toggleSlide(moveAmount, sliderList[i])
+            }
         }
-
     }
-
-    // sliderList.forEach((element) => {
-    //     console.log(element)
-    // });
 }
 
 function toggleSlide(units = 1, element) {
   document.getElementById('toggle')?.click();
 
-  const strip = element; //TODO: change for class Input-module__pbIYDa__strip change all toggles
+  const strip = element;
   if (!strip) return;
 
   const min = Number(strip.getAttribute('aria-valuemin')); //Got max possible Slider value
@@ -126,18 +96,3 @@ function toggleSlide(units = 1, element) {
   fire(document, 'pointerup', true);
   fire(document, 'mouseup', false);
 }
-
-// toggleAndLowerSlider();
-
-//104, 112, 13
-// x = convert([72,82,58])
-
-
-// console.log(x)
-
-// //z = mx+ny+b
-
-
-// //Input-module__pbIYDa__stripHandleInstant //class [0]
-// //Input-module__pbIYDa__stripHandleInstant // class [1]
-// setSliders(dest=[300,58,88])
