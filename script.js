@@ -69,7 +69,7 @@ function setSliders(dest=[360,100,100]){
     
     for(let i=0; i < sliderList.length; i++){
         console.log(sliderList[i].ariaLabel)
-        toggleSlide(0, sliderList[i])
+        //toggleSlide(0, sliderList[i])
 
 
         let currLoc = parseInt(sliderList[i].getAttribute('aria-valuenow'))
@@ -78,6 +78,13 @@ function setSliders(dest=[360,100,100]){
         console.log(moveAmount)
 
         toggleSlide(moveAmount, sliderList[i])
+
+        if(i !== 0){
+            toggleSlide(100-moveAmount, (sliderList[i]))
+        }
+        else{
+            toggleSlide(moveAmount, sliderList[i])
+        }
 
     }
 
@@ -96,7 +103,7 @@ function toggleSlide(units = 1, element) {
   const max = Number(strip.getAttribute('aria-valuemax'));//Get min possible Slider value
   const current = Number(strip.getAttribute('aria-valuenow')); //Get current Slider value
   
-  const target = Math.min(max, current + units); // down = higher hue 
+  const target = units; // down = higher hue 
 
   const rect = strip.getBoundingClientRect(); // {x,y,width,height,top,right,bottom,left}
   const x = rect.left + rect.width / 2; //loc of button center x
